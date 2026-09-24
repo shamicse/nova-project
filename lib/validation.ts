@@ -1,0 +1,5 @@
+import {z} from 'zod';
+import {categories} from './types';
+export const addressSchema=z.object({name:z.string().trim().min(2).max(100),phone:z.string().regex(/^\+?[0-9 ()-]{8,20}$/),line1:z.string().trim().min(5).max(200),city:z.string().trim().min(2).max(80),state:z.string().trim().min(2).max(80),postalCode:z.string().trim().min(3).max(12),country:z.enum(['IN','US','GB','CA','AU','DE','SG'])});
+export const productSchema=z.object({name:z.string().trim().min(3).max(120),brand:z.string().trim().min(2).max(60),category:z.enum(categories.slice(1) as [string,...string[]]),description:z.string().trim().min(20).max(5000),price:z.number().int().min(100).max(100000000),comparePrice:z.number().int().min(0).max(100000000).default(0),stock:z.number().int().min(0).max(100000),image:z.string().regex(/^\/(images\/[a-zA-Z0-9._-]+|api\/media\/[a-f0-9-]+\.(jpg|png|webp))$/),badge:z.string().max(30).default(''),active:z.number().int().min(0).max(1).default(1)});
+export const checkoutSchema=z.object({addressId:z.string().uuid(),coupon:z.string().trim().max(30).default(''),provider:z.enum(['demo','stripe','razorpay']),idempotencyKey:z.string().uuid()});
